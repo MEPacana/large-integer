@@ -1,7 +1,9 @@
 /*
 * Second patch by Mike
 */
-
+/*
+  gwapo koh by Loewe
+*/	//mag char array
 import java.util.*;
 
 public class LargeInteger{
@@ -19,7 +21,7 @@ public class LargeInteger{
 
 	LargeInteger(LargeInteger numString) {
 		number = numString.getNumber
-
+		
 	}
 
 	LargeInteger(int number) {
@@ -44,7 +46,7 @@ public class LargeInteger{
 
 	public LargeInteger divide(LargeInteger a){
 		LargeInteger ans;
-		return ans;
+		return ans; //gwapo koh 
 	}
 
 	public LargeInteger add(String a){
