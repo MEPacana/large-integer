@@ -1,5 +1,11 @@
-import java.util.*;
+import java.util.Arrays;
+/**
+    na disturb koh tungod kay naay repetitive loops nga ganahan unta nako i
+    himuon into function hahaha
+    btw feel nako ma lapas ni 500 lines
 
+    by Loewe the Gwapo
+**/
 public class LargeInteger{
 	private int size;
 	private String number;
@@ -10,146 +16,179 @@ public class LargeInteger{
 	}
 
 	LargeInteger(String numString) {
-		char[] a = new char[1000];
-		char[] b = new char[1000];
-
-		for(int i = 0; i < 1000; i++){
-			a[i] = '\0';
-			b[i] = '\0';
-		}
-
-		for(int i = 0; i<1000; i++){
-			if(i < numString.length()){
-				a[i] = numString.charAt(i);
-			} else {
-				a[i] = '\0';
-			}
-
-
-//			b[i] = number.charAt(i);
- 		}
-
-		//a = numString.toCharArray();
-		//System.out.println(a.length);
-
-		int i, j=0, k;
-		size = 0;
-
-		for(;a[j+1]!='\0';j++);
-
-		for(i = 1000 - j - 1, k = i - 1 ;j >= 0; j--, i++){
-	        b[i] = a[j];
-	        size++;
-		}
-
-		for(;k>=0;k--)
-	        b[k]='\0';
-
-	    number = b.toString();
-	    System.out.println(number + "Heellooo");	    
+        number = numString;
+        size = number.length();
 	}
 
-	LargeInteger(LargeInteger numString) {
+	/*LargeInteger(LargeInteger numString) {
 		number = numString.getNumber();
 
-	}
+	}*/
+
 
 	LargeInteger(int number) {
 		this.number = Integer.toString(number);
 		size = this.number.length();
 	}
 
-	public LargeInteger add(LargeInteger a){
-		LargeInteger ans = new LargeInteger();
-		int i = 0, j = 0, carry = 0, k=0, digits;		
-		boolean flag = false;
+	/**
+        kuhaon niya ang size
+	**/
 
-		char[] str1 = new char[1000];
-		char[] str2 = new char[1000];
-		char[] str3 = new char[1000];
-
-		str1 = number.toCharArray();
-		str2 = a.number.toCharArray();
-		str3 = ans.number.toCharArray();
-
-		for(; str1[i] == '\0';i++);
-		for(; str2[j] == '\0';j++);
-
-		digits = (size>a.size) ? size : a.size;
-
-		for(int l = 0; str1[l] != '\0';l++)
-			System.out.println(str1[l] + " " + l);
-	    k = (105 <= str1[999] + str2[999]) ? 998-digits : 1000-digits;
-
-	    ans.size = 1000-k;
-
-		for(;i < 1000 && j < 1000; i++, j++, k++){
-	        str3[k] += carry;
-			
-			if(str2[j] + str1[i] + carry >= 106){
-				str3[k] -= 58;
-				carry = 1;
-			}
-
-			else{
-	            str3[k] -= 48;
-	            carry = 0;
-			}
-
-			str3[k] += str2[j] + str1[i];
-			if(str3[k]>57)
-	            str3[k]-=10;
-		}
-
-		if(k<1000){
-			if(i<1000)
-				for(;i<1000;i++,k++){
-				    str3[k] += (str1[i]+carry>57) ? str1[i] + carry - 10 : str1[i] + carry;
-	                if(str1[i]+carry>57)
-	                    carry = 1;
-	                else
-	                    carry = 0;
-				}
-			else
-				for(;j<1000;j++,k++){
-	                str3[k] += (str1[i]+carry>57) ? str2[j] + carry - 10 : str2[j] + carry;
-	                if(str2[j]+carry>57)
-	                    carry = 1;
-	                else
-	                    carry = 0;
-				}
-		}
-		if(k==1000-1)
-	        str3[k] += carry+48;
-	    for(i = 1000-1; 1000 - i < ans.size ; i--){
-	        if(str3[i]=='\0'&& str3[i-1] != '\0'){
-	            str3[i] = str3[i-1];
-	            flag=true;
-	        }
-	        if(flag == true){
-	            str3[i-1] = '\0';
-	            flag = false;
-	        }
-	    }
-	    if(str3[1000-1]=='0'){
-	        for(i = 1000-1; str3[i]!='\0';i--)
-	            str3[i] = str3[i-1];
-	        ans.size--;
-	    }
-	    ans.number = str3.toString();
-		return ans;		
+	private int sizearr(int a,int b){
+        if(a >= b){
+            return a;
+        }
+        else{
+            return b;
+        }
 	}
 
+    public LargeInteger add(LargeInteger a) {
+        int[] result = new int[sizearr(size,a.size) + 1];
+        for(int i = 0; i < result.length; i++){
+            result[i] = 0;
+        }
+
+        plus(result,number);
+        plus(result,a.number);
+
+        char tmp[] = new char[result.length + 1];
+        for(int i = 0; i < tmp.length - 1; i++){
+        	tmp[i] = (char)(result[i] + 48);
+        }
+        tmp[tmp.length-1] = '\0';
+        String tmp2 = new String(tmp);
+		LargeInteger ans = new LargeInteger();
+		ans.number = tmp2;
+		return ans;
+    }
+    //no negatives yet
+    private void plus(int[] result, String a){
+        int len = a.length();
+        int resultlen = result.length;
+        int carry = 0,num1 = 0;
+
+        while(len > 0){
+            num1 = Character.getNumericValue(a.charAt(len-1));
+
+            num1 += carry;
+            carry = 0;
+            if(result[resultlen-1] + num1 > 9){
+                carry = 1;
+                num1 = (num1 + result[resultlen-1]) % 10;
+                result[resultlen-1] = num1;
+            }
+            else{
+                result[resultlen-1] += num1;
+            }
+            len--;
+            resultlen--;
+        }
+        if(carry == 1){
+            num1 = (result[resultlen-1] + carry) % 10;
+            result[resultlen-1] = num1;
+            result[resultlen-2] = 1;
+        }
+    }
+
 	public LargeInteger subtract(LargeInteger a){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		LargeInteger ans = new LargeInteger();
 		return ans;
 	}
 
 	public LargeInteger multiply(LargeInteger a){
+        int[] result = new int[size + a.size];
+        int[] anew = new int[sizearr(size,a.size) + 1];
+        int carry = 0;
+
+        for(int i = 0; i < result.length; i++){
+        	result[i] = 0;
+        }
+        for(int i = 0; i < anew.length; i++){
+            anew[i] = 0;
+        }
+
+
+        for(int i = 0; i < a.size; i++){
+            int j = 0;
+            carry = 0;
+            for(; j < size; j++){
+                int num1 = Character.getNumericValue(a.number.charAt(a.size-i-1));
+                int num2 = Character.getNumericValue(number.charAt(size-j-1));
+                int prod = num1 * num2;
+                //System.out.println(prod + " mao ni si prod");
+                prod += carry;
+                carry = 0;
+
+                if(prod > 9){
+                    carry = prod / 10;
+                    prod = prod % 10;
+                }
+                anew[anew.length-j-1] += prod;
+            }
+            anew[anew.length-j-1] = carry;
+
+            int carry1 = 0;
+            int k,l;
+            for(k = result.length - i - 1, l = anew.length-1; l >= 0; k--,l--){
+            	anew[l] += carry1;
+            	carry1 = 0;
+            	if(result[k] + anew[l] > 9){
+                    carry1 = 1;
+            		anew[l] = (anew[l] + result[k]) % 10;
+                    result[k] = anew[l];
+            	}
+            	else{
+                    result[k] += anew[l];
+            	}
+            }
+            if(carry1 == 1){
+                result[k] = (result[k] + carry) % 10;
+                result[k-1] = 1;
+            }
+            for(int z = 0; z<anew.length;z++){
+            	anew[z] = 0;
+            }
+        }
+
+        char tmp[] = new char[result.length + 1];
+        for(int i = 0; i < tmp.length - 1; i++){
+        	tmp[i] = (char)(result[i] + 48);
+        }
+        tmp[tmp.length-1] = '\0';
+        String tmp2 = new String(tmp);
 		LargeInteger ans = new LargeInteger();
+		ans.number = tmp2;
 		return ans;
 	}
 
+
+    /*
 	public LargeInteger divide(LargeInteger a){
 		LargeInteger ans = new LargeInteger();
 		return ans;
@@ -185,45 +224,10 @@ public class LargeInteger{
 		return ans;
 	}
 
-	/**
-        kuhaon niya ang size
-	**/
-
-	private int sizearr(int a,int b){
-	        if(a > b){
-	            return a;
-	        }
-	        else{
-	            return b;
-	        }
+	public LargeInteger multiply(int a){
+		LargeInteger ans = new LargeInteger();
+		return ans;
 	}
-
-
-
-
-	public LargeInteger multiply(LargeInteger a){
-	        int[] result = new int[size + a.size];
-	        int[] anew = new int[sizearr(size,a.size)];
-	        int carry = 0;
-	
-	        for(int i = 0; i < a.size; i++){
-	            for(int j = 0; j < size; j++){
-	                int num1 = Character.getNumericValue(a.number.charAt(a.size-i-1));
-	                int num2 = Character.getNumericValue(number.charAt(size-j-1));
-	                int prod = num1 * num2;
-	                prod += carry;
-	                carry = 0;
-	                if(carry > 9){
-	                    carry = prod / 10;
-	                    prod = prod % 10;
-	                }
-	            }
-	            //for(int k = result.length - i - 1; k >= 0)
-	            //need addition
-	            //check please
-	       	LargeIntger ans;
-	       	return ans
-        }
 
 	public LargeInteger divide(int a){
 		LargeInteger ans = new LargeInteger();
@@ -234,7 +238,7 @@ public class LargeInteger{
 		return number;
 	}
 
-	public void display(){	
+	public void display(){
 	    int i = 999;
 	    char[] str = number.toCharArray();
 
@@ -251,9 +255,11 @@ public class LargeInteger{
 			return false;
 		}
 	}
-	
+    */
 	public String getNumber(){ return this.number; }
-	
-	public int getSize(){ return this.size; }
-}
 
+	public int getSize(){ return this.size; }
+
+
+
+}
