@@ -185,10 +185,45 @@ public class LargeInteger{
 		return ans;
 	}
 
-	public LargeInteger multiply(int a){
-		LargeInteger ans = new LargeInteger();
-		return ans;
+	/**
+        kuhaon niya ang size
+	**/
+
+	private int sizearr(int a,int b){
+	        if(a > b){
+	            return a;
+	        }
+	        else{
+	            return b;
+	        }
 	}
+
+
+
+
+	public LargeInteger multiply(LargeInteger a){
+	        int[] result = new int[size + a.size];
+	        int[] anew = new int[sizearr(size,a.size)];
+	        int carry = 0;
+	
+	        for(int i = 0; i < a.size; i++){
+	            for(int j = 0; j < size; j++){
+	                int num1 = Character.getNumericValue(a.number.charAt(a.size-i-1));
+	                int num2 = Character.getNumericValue(number.charAt(size-j-1));
+	                int prod = num1 * num2;
+	                prod += carry;
+	                carry = 0;
+	                if(carry > 9){
+	                    carry = prod / 10;
+	                    prod = prod % 10;
+	                }
+	            }
+	            //for(int k = result.length - i - 1; k >= 0)
+	            //need addition
+	            //check please
+	       	LargeIntger ans;
+	       	return ans
+        }
 
 	public LargeInteger divide(int a){
 		LargeInteger ans = new LargeInteger();
