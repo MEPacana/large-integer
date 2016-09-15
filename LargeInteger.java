@@ -1,8 +1,8 @@
 import java.util.Arrays;
 /**
-    na disturb koh tungod kay naay repetitive loops nga ganahan unta nako i
-    himuon into function hahaha
-    btw feel nako ma lapas ni 500 lines
+    DIVISION NA LNGGG!!!!!!
+    please check if naa pa bay errors
+    ok na ni siya btw
 
     by Loewe the Gwapo
 **/
@@ -20,10 +20,10 @@ public class LargeInteger{
         size = number.length();
 	}
 
-	/*LargeInteger(LargeInteger numString) {
+	LargeInteger(LargeInteger numString) {
 		number = numString.getNumber();
-
-	}*/
+        size = numString.getSize;
+	}
 
 
 	LargeInteger(int number) {
@@ -52,7 +52,7 @@ public class LargeInteger{
 	}
 
     public LargeInteger add(LargeInteger a) {
-        if((number.charAt(0) == '-' && number.charAt(0) == '-') || (number.charAt(0) != '-' && number.charAt(0) != '-')){
+        if((number.charAt(0) == '-' && a.number.charAt(0) == '-') || (number.charAt(0) != '-' && a.number.charAt(0) != '-')){
             char[] temp1 = new char[size];
             char[] temp2 = new char[a.size];
             temp1 = number.toCharArray();
@@ -91,8 +91,21 @@ public class LargeInteger{
         }
         else{
             LargeInteger ans = new LargeInteger();
+
+            if(number.charAt(0) != '-' && a.number.charAt(0) == '-'){
+                char[] n2 = new char[a.size];
+                n2 = a.number.toCharArray();
+                n2[0] = '0';
+                String c = new String(n2);
+                LargeInteger neww = new LargeInteger();
+                neww.number = c;
+                neww.size = c.length();
+                ans = subtract(neww);
+            }
+            else{
+                ans = subtract(a);
+            }
             return ans;
-            //subtraction please
         }
     }
 
@@ -124,87 +137,114 @@ public class LargeInteger{
     }
 
     public LargeInteger subtract(LargeInteger a){
-        if((number.charAt(0) == '-' && number.charAt(0) == '-') || (number.charAt(0) != '-' && number.charAt(0) != '-')){
-            char[] temp1 = new char[size];
-            char[] temp2 = new char[a.size];
-            temp1 = number.toCharArray();
-            temp2 = a.number.toCharArray();
+        if((number.charAt(0) != '-' && a.number.charAt(0) != '-') || (number.charAt(0) == '-' && a.number.charAt(0) != '-')){
+            char[] n1 = new char[size];
+            char[] n2 = new char[a.size];
+            int i,j,z,sum,k;
+            int[] ans = new int[sizearr(size,a.size)];
+            char temp;
+            boolean change = false;
+            boolean flag = false;
+            n1 = number.toCharArray();
+            n2 = a.number.toCharArray();
 
-        if(number.charAt(0) == '-' && a.number.charAt(0) == '-'){
-            temp1[0] = '0';
-            temp2[0] = '0';
-        }
-
-        String c = new String(temp1);
-        String d = new String(temp2);
-
-        int i,j,z,sum,ncarry,k,big=0;
-        char[] n1=number.toCharArray();
-        char[] n2=a.number.toCharArray();
-        int[] ans = new int[sizearr(size,a.size)];
-        char temp;
-        boolean change = false;
-        boolean flag = false;
-        int lim1=n1.length, lim2=n2.length;
-        int carry;
-        if(n1.length == n2.length){//if both were the same size this determines which is bigger by comparing the values from first to last until deemed the same
-            if(n1[0] == n2[0]){
-                for(i = 0; i < n1.length; i++){
-                    if(n1[i] < n2[i]){
-                        change = true;
+            if(number.charAt(0) == '-'){
+                n1[0] = '0';
+                for(i = 1; i < n1.length; i++){
+                    if(n1[i] < n2[i-1]){
+                        flag = true;
                         break;
                     }
                 }
             }
-        }
-        if(n2.length > n1.length || change == true){//if the second one was bigger which means the outcome was a negative, i had to interchange them and then set a flag that would display a negative answer
-            flag = true;
-            for(i=0;i<ans.length;i++){
-                temp =n1[i];
-                n1[i]=n2[i];
-                n2[i]= temp;
+
+            int lim1=n1.length, lim2=n2.length;
+            int carry;
+            if(n1.length == n2.length){//if both were the same size this determines which is bigger by comparing the values from first to last until deemed the same
+                if(n1[0] == n2[0]){
+                    for(i = 0; i < n1.length; i++){
+                        if(n1[i] < n2[i]){
+                            change = true;
+                            break;
+                        }
+                    }
+                }
             }
-            carry=lim1; //size sa array gi swap
-            lim1=lim2;
-            lim2=carry;
-        }
-        for(i = n1.length - 1,j = n2.length -1; lim1 > 0;lim1--,j--,i--){//subtracts the second array from the first aray
-            if (j < 0){//If the second one is shorter, just copy the first arrays remaining numbers
-                sum=(int)(n1[i]-48);
+            if(n2.length > n1.length || change == true){//if the second one was bigger which means the outcome was a negative, i had to interchange them and then set a flag that would display a negative answer
+                flag = true;
+                for(i=0;i<ans.length;i++){
+                    temp =n1[i];
+                    n1[i]=n2[i];
+                    n2[i]= temp;
+                }
+                carry=lim1; //size sa array gi swap
+                lim1=lim2;
+                lim2=carry;
+            }
+            for(i = n1.length - 1,j = n2.length -1; lim1 > 0;lim1--,j--,i--){//subtracts the second array from the first aray
+                if (j < 0){//If the second one is shorter, just copy the first arrays remaining numbers
+                    sum=(int)(n1[i]-48);
+                }
+                else{
+                    if(n1[i] < n2[j]){//if the first array was less than the second
+                        n1[i]=(char)(n1[i] + 10);
+                       // if(n1.length != 1){
+                            if(n1.length == 1){
+                                z=0;
+                            }
+                            else{
+                                z=1;
+                            }
+                            while(n1[i-z] == 48){//If the one next to it where you 'borrow' is zero, automatically turn it to 9
+                                n1[i-z] = 57;
+                                z++;
+                            }
+                            n1[i-z]=(char)(n1[i-z]-1);// If it isn't a zero you subtract 1 from it
+                        //}
+                    }
+                    sum=(int)((n1[i]-48)-(n2[j]-48));//continue normally
+                }
+                ans[i]= sum ;//add 48 since im using a string of characters
+            }
+            char result[] = new char[ans.length + 1];      //converting to char[]
+            for(i = 0; i < result.length - 1; i++){
+                result[i] = (char)(ans[i] + 48);
+            }
+            result[result.length-1] = '\0';
+            errleadzer(result);
+
+            String tmp2 = new String(result);
+            LargeInteger res = new LargeInteger();
+
+            if(flag == true){//the display depends if the answer is a positive or a negative
+                res.number = "-" + tmp2;
+                res.size = tmp2.length() + 1;
             }
             else{
-                if(n1[i] < n2[j]){//if the first array was less than the second
-                    n1[i]=(char)(n1[i] + 10);
-                    z=1;
-                    while(n1[i-z] == 48){//If the one next to it where you 'borrow' is zero, automatically turn it to 9
-                        n1[i-z] = 57;
-                        z++;
-                    }
-                    n1[i-z]=(char)(n1[i-z]-1);// If it isn't a zero you subtract 1 from it
-                }
-                sum=(int)((n1[i]-48)-(n2[j]-48));//continue normally
+                res.number = tmp2;
+                res.size = tmp2.length();
             }
-            ans[i]= sum ;//add 48 since im using a string of characters
-        }
-        char result[] = new char[ans.length + 1];      //converting to char[]
-        for(i = 0; i < result.length - 1; i++){
-        	result[i] = (char)(ans[i] + 48);
-        }
-        result[result.length-1] = '\0';
-        errleadzer(result);
-
-        String tmp2 = new String(result);
-        LargeInteger res = new LargeInteger();
-
-        if(flag == true){//the display depends if the answer is a positive or a negative
-            res.number = "-" + tmp2;
-            res.size = tmp2.length();
+            return res;
         }
         else{
-            res.number = tmp2;
-            res.size = tmp2.length();
+            LargeInteger ans = new LargeInteger();
+
+            if(number.charAt(0) != '-' && a.number.charAt(0) == '-'){
+                char[] n2 = new char[a.size];
+                n2 = a.number.toCharArray();
+                n2[0] = '0';
+                String c = new String(n2);
+                LargeInteger neww = new LargeInteger();
+                neww.number = c;
+                neww.size = c.length();
+                ans = add(neww);
+            }
+            else{
+                ans = add(a);
+            }
+            return ans;
+
         }
-        return res;
 	}
 
 	public LargeInteger multiply(LargeInteger a){
@@ -290,24 +330,40 @@ public class LargeInteger{
 	}
 
 
-    /*
+
 	public LargeInteger divide(LargeInteger a){
-		LargeInteger ans = new LargeInteger();
+        LargeInteger ans = new LargeInteger();
+        
+        if(a.number == "0"){
+            ans.number = "ERR";
+            ans.size = ans.number.length();
+            return ans;
+        }
+
+        
+
+
 		return ans;
 	}
 
 	public LargeInteger add(String a){
-		LargeInteger ans = new LargeInteger();
+        //LargeInteger neww = LargeInteger();
+        //neww.number = a.
+		LargeInteger ans = new LargeInteger(a);
+        ans = add(ans);
 		return ans;
 	}
 
+
 	public LargeInteger subtract(String a){
-		LargeInteger ans = new LargeInteger();
+		LargeInteger ans = new LargeInteger(a);
+        ans = subtract(ans);
 		return ans;
 	}
 
 	public LargeInteger multiply(String a){
-		LargeInteger ans = new LargeInteger();
+		LargeInteger ans = new LargeInteger(a);
+        ans = multiply(ans);
 		return ans;
 	}
 
@@ -317,17 +373,20 @@ public class LargeInteger{
 	}
 
 	public LargeInteger add(int a){
-		LargeInteger ans = new LargeInteger();
+		LargeInteger ans = new LargeInteger(a);
+		ans = add(ans);
 		return ans;
 	}
 
 	public LargeInteger subtract(int a){
-		LargeInteger ans = new LargeInteger();
+		LargeInteger ans = new LargeInteger(a);
+		ans = subtract(ans);
 		return ans;
 	}
 
 	public LargeInteger multiply(int a){
-		LargeInteger ans = new LargeInteger();
+		LargeInteger ans = new LargeInteger(a);
+		ans = multiply(ans)
 		return ans;
 	}
 
@@ -341,13 +400,15 @@ public class LargeInteger{
 	}
 
 	public void display(){
-	    int i = 999;
+	    /*int i = 999;
 	    char[] str = number.toCharArray();
 
 	    for(; str[i]=='0' ; i--);
 	    for(;str[i]!='\0';i--)
 	        System.out.print(str[i]);
-	    System.out.printf("\n%i\n",size);
+	    System.out.printf("\n%i\n",size);*/
+	    System.out.println(number);
+        System.out.println(size + " this is size");
 	}
 
 	public boolean equals(LargeInteger b){
@@ -357,11 +418,9 @@ public class LargeInteger{
 			return false;
 		}
 	}
-    */
+
 	public String getNumber(){ return this.number; }
 
 	public int getSize(){ return this.size; }
-
-
 
 }
