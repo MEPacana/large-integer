@@ -22,7 +22,7 @@ public class LargeInteger{
 
 	LargeInteger(LargeInteger numString) {
 		number = numString.getNumber();
-        size = numString.getSize;
+        size = numString.size;
 	}
 
 
@@ -332,15 +332,19 @@ public class LargeInteger{
 
 
 	public LargeInteger divide(LargeInteger a){
-        LargeInteger ans = new LargeInteger();
-        
+        LargeInteger ans = new LargeInteger(a);
+        LargeInteger tmp = new LargeInteger(b)
+
         if(a.number == "0"){
             ans.number = "ERR";
             ans.size = ans.number.length();
             return ans;
         }
 
-        
+       	while(a.number != "0"){
+
+       	}
+
 
 
 		return ans;
@@ -386,7 +390,7 @@ public class LargeInteger{
 
 	public LargeInteger multiply(int a){
 		LargeInteger ans = new LargeInteger(a);
-		ans = multiply(ans)
+		ans = multiply(ans);
 		return ans;
 	}
 
